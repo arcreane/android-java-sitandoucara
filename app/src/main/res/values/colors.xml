@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+       <color name="bottom_nav_background">#25233D</color>
+<color name="bottom_nav_active">#F9F9FF</color>
+<color name="bottom_nav_inactive">#76748C</color>
+<color name="app_background">#070420</color>
+<color name="default_text">#FFFFFF</color>
+
+
 </resources>
