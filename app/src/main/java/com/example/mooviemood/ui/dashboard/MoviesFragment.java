@@ -77,11 +77,18 @@ public class MoviesFragment extends Fragment {
 
     private void showMovie(int index) {
         Movie movie = movies.get(index);
+    
         Glide.with(this)
             .load(movie.posterPath)
             .into(poster);
+    
         title.setText(movie.title);
         description.setText(movie.overview);
-        providersText.setText("Netflix - Disney+"); // temporaire
+    
+        // Dynamique : providers
+        MovieRepository.fetchWatchProviders(movie.id, result -> {
+            providersText.setText(result);
+        });
     }
+    
 }

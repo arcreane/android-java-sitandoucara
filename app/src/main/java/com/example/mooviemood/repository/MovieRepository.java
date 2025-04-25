@@ -1,6 +1,7 @@
 package com.example.mooviemood.repository;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.example.mooviemood.model.Movie;
 import com.example.mooviemood.utils.Constants;
@@ -21,6 +22,12 @@ public class MovieRepository {
         void onError(Exception e);
     }
 
+    // Interface pour récupérer une chaîne (utilisée pour les providers)
+    public interface StringCallback {
+        void onResult(String result);
+    }
+
+    // Appel pour récupérer les films par genre
     public static void fetchMoviesByGenre(int genreId, MovieCallback callback) {
         new AsyncTask<Void, Void, ArrayList<Movie>>() {
             Exception error;
@@ -48,14 +55,17 @@ public class MovieRepository {
 
                     for (int i = 0; i < results.length(); i++) {
                         JSONObject m = results.getJSONObject(i);
+
+                        int id = m.getInt("id"); 
                         String title = m.getString("title");
                         String overview = m.getString("overview");
                         String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
 
-                        movies.add(new Movie(title, overview, posterPath, new ArrayList<>()));
+                        movies.add(new Movie(id, title, overview, posterPath, new ArrayList<>()));
                     }
 
                     return movies;
+
                 } catch (Exception e) {
                     error = e;
                     return null;
@@ -69,6 +79,50 @@ public class MovieRepository {
                 } else {
                     callback.onError(error);
                 }
+            }
+        }.execute();
+    }
+
+    // Appel pour récupérer les plateformes de diffusion d'un film
+    public static void fetchWatchProviders(int movieId, StringCallback callback) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                try {
+                    String urlStr = Constants.TMDB_BASE_URL + "/movie/" + movieId + "/watch/providers?api_key=" + Constants.TMDB_API_KEY;
+                    URL url = new URL(urlStr);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+
+                    JSONObject data = new JSONObject(sb.toString());
+                    JSONObject fr = data.optJSONObject("results").optJSONObject("FR");
+
+                    if (fr != null && fr.has("flatrate")) {
+                        JSONArray platforms = fr.getJSONArray("flatrate");
+                        ArrayList<String> names = new ArrayList<>();
+                        for (int i = 0; i < platforms.length(); i++) {
+                            names.add(platforms.getJSONObject(i).getString("provider_name"));
+                        }
+                        return TextUtils.join(" - ", names);
+                    } else {
+                        return "Non disponible en streaming";
+                    }
+
+                } catch (Exception e) {
+                    return "Erreur";
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                callback.onResult(result);
             }
         }.execute();
     }
