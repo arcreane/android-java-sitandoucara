@@ -2,15 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.MoovieMood" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#7FAA35</item>
-        <item name="colorPrimaryVariant">#76748C</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">#070420</item>
+        <item name="colorPrimaryVariant">#E00F32</item>
+        <item name="colorOnPrimary">#0FE040</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#FFFFFF</item>
+        <item name="colorSecondary">#FFF30E</item>
         <item name="colorSecondaryVariant">#E83EAF</item>
         <item name="colorOnSecondary">#AA3535</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">#070420</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">#070420</item>
         <item name="android:textColor">#FFFFFF</item>
