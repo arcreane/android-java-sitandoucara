@@ -16,6 +16,20 @@ public class Movie {
         this.posterPath = posterPath;
         this.providers = providers;
     }
+
+    @Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Movie movie = (Movie) obj;
+    return id == movie.id;
+}
+
+@Override
+public int hashCode() {
+    return id;
+}
+
     
 }
 

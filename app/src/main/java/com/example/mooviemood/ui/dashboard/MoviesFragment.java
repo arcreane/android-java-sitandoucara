@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +21,10 @@ public class MoviesFragment extends Fragment {
 
     private ImageView poster;
     private TextView title, description, providersText;
+    private ImageView btnLike;
+
     private ArrayList<Movie> movies = new ArrayList<>();
+    private ArrayList<Movie> favorites = new ArrayList<>();
     private int currentIndex = 0;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class MoviesFragment extends Fragment {
 
         ImageView btnNext = root.findViewById(R.id.btn_next);
         ImageView btnPrev = root.findViewById(R.id.btn_prev);
-        ImageView btnLike = root.findViewById(R.id.btn_like);
+        btnLike = root.findViewById(R.id.btn_like);
 
         MovieRepository.fetchMoviesByGenre(35, new MovieRepository.MovieCallback() {
             @Override
@@ -65,11 +67,15 @@ public class MoviesFragment extends Fragment {
         });
 
         btnLike.setOnClickListener(v -> {
-            new AlertDialog.Builder(requireContext())
-                .setTitle("Liked")
-                .setMessage("Film ajouté aux favoris ❤️")
-                .setPositiveButton("OK", null)
-                .show();
+            Movie currentMovie = movies.get(currentIndex);
+
+            if (favorites.contains(currentMovie)) {
+                favorites.remove(currentMovie);
+                btnLike.setImageResource(R.drawable.ic_favorite); // vide
+            } else {
+                favorites.add(currentMovie);
+                btnLike.setImageResource(R.drawable.ic_favorite_filled); // plein
+            }
         });
 
         return root;
@@ -77,18 +83,23 @@ public class MoviesFragment extends Fragment {
 
     private void showMovie(int index) {
         Movie movie = movies.get(index);
-    
+
         Glide.with(this)
             .load(movie.posterPath)
             .into(poster);
-    
+
         title.setText(movie.title);
         description.setText(movie.overview);
-    
-        // Dynamique : providers
+        providersText.setText("Chargement...");
+
+        // Ajout affichage des plateformes
         MovieRepository.fetchWatchProviders(movie.id, result -> {
             providersText.setText(result);
         });
+
+        // Actualise le cœur
+        btnLike.setImageResource(
+            favorites.contains(movie) ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite
+        );
     }
-    
 }
