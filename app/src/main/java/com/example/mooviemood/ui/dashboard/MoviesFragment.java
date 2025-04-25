@@ -24,7 +24,7 @@ public class MoviesFragment extends Fragment {
     private ImageView btnLike;
 
     private ArrayList<Movie> movies = new ArrayList<>();
-    private ArrayList<Movie> favorites = new ArrayList<>();
+    public static ArrayList<Movie> favorites = new ArrayList<>();
     private int currentIndex = 0;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
