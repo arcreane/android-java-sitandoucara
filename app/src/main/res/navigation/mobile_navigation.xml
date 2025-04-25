@@ -12,10 +12,10 @@
     tools:layout="@layout/fragment_mood" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.mooviemood.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+    android:id="@+id/navigation_dashboard"
+    android:name="com.example.mooviemood.ui.dashboard.MoviesFragment"
+    android:label="Movies"
+    tools:layout="@layout/fragment_movies" />
 
     <fragment
         android:id="@+id/navigation_notifications"

@@ -1,0 +1,75 @@
+package com.example.mooviemood.repository;
+
+import android.os.AsyncTask;
+
+import com.example.mooviemood.model.Movie;
+import com.example.mooviemood.utils.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
+public class MovieRepository {
+
+    public interface MovieCallback {
+        void onSuccess(ArrayList<Movie> movies);
+        void onError(Exception e);
+    }
+
+    public static void fetchMoviesByGenre(int genreId, MovieCallback callback) {
+        new AsyncTask<Void, Void, ArrayList<Movie>>() {
+            Exception error;
+
+            @Override
+            protected ArrayList<Movie> doInBackground(Void... voids) {
+                try {
+                    String urlStr = Constants.TMDB_BASE_URL + "/discover/movie?api_key=" + Constants.TMDB_API_KEY + "&with_genres=" + genreId;
+                    URL url = new URL(urlStr);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+
+                    JSONObject response = new JSONObject(sb.toString());
+                    JSONArray results = response.getJSONArray("results");
+
+                    ArrayList<Movie> movies = new ArrayList<>();
+
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject m = results.getJSONObject(i);
+                        String title = m.getString("title");
+                        String overview = m.getString("overview");
+                        String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
+
+                        movies.add(new Movie(title, overview, posterPath, new ArrayList<>()));
+                    }
+
+                    return movies;
+                } catch (Exception e) {
+                    error = e;
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Movie> movies) {
+                if (movies != null) {
+                    callback.onSuccess(movies);
+                } else {
+                    callback.onError(error);
+                }
+            }
+        }.execute();
+    }
+}
