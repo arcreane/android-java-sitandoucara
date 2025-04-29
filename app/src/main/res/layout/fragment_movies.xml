@@ -21,6 +21,17 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
+    android:id="@+id/current_mood"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Your Mood: Open-minded"
+    android:textColor="#FF3366"
+    android:textStyle="italic"
+    android:textSize="18sp"
+    android:layout_marginBottom="8dp" />
+
+
+        <TextView
             android:id="@+id/available_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

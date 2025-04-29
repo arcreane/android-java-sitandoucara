@@ -1,5 +1,9 @@
 package com.example.mooviemood.ui.dashboard;
 
+
+import com.example.mooviemood.ui.home.MoodFragment;
+import com.example.mooviemood.ui.home.MoodType;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +26,8 @@ public class MoviesFragment extends Fragment {
     private ImageView poster;
     private TextView title, description, providersText;
     private ImageView btnLike;
+    private TextView currentMoodText;
+
 
     private ArrayList<Movie> movies = new ArrayList<>();
     public static ArrayList<Movie> favorites = new ArrayList<>();
@@ -29,6 +35,8 @@ public class MoviesFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_movies, container, false);
+        currentMoodText = root.findViewById(R.id.current_mood);
+updateCurrentMoodText();
 
         poster = root.findViewById(R.id.poster);
         title = root.findViewById(R.id.title);
@@ -101,5 +109,12 @@ public class MoviesFragment extends Fragment {
         btnLike.setImageResource(
             favorites.contains(movie) ? R.drawable.ic_favorite_filled : R.drawable.ic_favorite
         );
+    }
+
+    private void updateCurrentMoodText() {
+        MoodType currentMood = MoodFragment.getCurrentMood();
+        if (currentMoodText != null && currentMood != null) {
+            currentMoodText.setText("Your Mood: " + currentMood.label);
+        }
     }
 }

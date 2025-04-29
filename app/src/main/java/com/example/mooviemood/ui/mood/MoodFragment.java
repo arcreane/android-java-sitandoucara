@@ -93,4 +93,17 @@ public class MoodFragment extends Fragment {
 
         currentMood = selectedMood;
     }
+
+    public static MoodType getCurrentMood() {
+        return instance != null ? instance.currentMood : MoodType.OPEN_MINDED;
+    }
+    
+    private static MoodFragment instance;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this;
+    }
+    
 }
