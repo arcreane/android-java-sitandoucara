@@ -1,42 +1,5 @@
 package com.example.mooviemood.ui.home;
-/* 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.mooviemood.databinding.FragmentHomeBinding;
-
-public class MoodFragment extends Fragment {
-
-    private FragmentHomeBinding binding;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-}*/
-
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -54,9 +17,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mooviemood.R;
 
+import java.util.HashMap;
+
 public class MoodFragment extends Fragment {
 
     private GridLayout moodGrid;
+    private MoodType currentMood = MoodType.OPEN_MINDED;
+    private final HashMap<MoodType, ImageView> moodIcons = new HashMap<>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_mood, container, false);
@@ -84,10 +51,13 @@ public class MoodFragment extends Fragment {
         container.setBackground(background);
 
         ImageView icon = new ImageView(context);
-        icon.setImageResource(mood.iconRes);
+        int initialIcon = (mood == currentMood) ? mood.getActiveIconRes() : mood.iconRes;
+        icon.setImageResource(initialIcon);
         LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(150, 150);
         icon.setLayoutParams(imgParams);
         container.addView(icon);
+
+        moodIcons.put(mood, icon);
 
         TextView label = new TextView(context);
         label.setText(mood.label);
@@ -104,14 +74,23 @@ public class MoodFragment extends Fragment {
         wrapper.addView(label);
 
         container.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
-                .setTitle("Mood choisi")
-                .setMessage("Tu as choisi : " + mood.label)
-                .setPositiveButton("OK", null)
-                .show();
+            updateMoodSelection(mood);
         });
 
         return wrapper;
     }
-}
 
+    private void updateMoodSelection(MoodType selectedMood) {
+        if (selectedMood == currentMood) return;
+
+        // Réinitialiser l'ancien en mode normal
+        ImageView oldIcon = moodIcons.get(currentMood);
+        if (oldIcon != null) oldIcon.setImageResource(currentMood.iconRes);
+
+        // Activer le nouveau
+        ImageView newIcon = moodIcons.get(selectedMood);
+        if (newIcon != null) newIcon.setImageResource(selectedMood.getActiveIconRes());
+
+        currentMood = selectedMood;
+    }
+}
