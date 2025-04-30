@@ -38,47 +38,64 @@ public class MoodFragment extends Fragment {
 
     private View createMoodView(MoodType mood) {
         Context context = requireContext();
-
+    
+        // Wrapper vertical
+        LinearLayout wrapper = new LinearLayout(context);
+        wrapper.setOrientation(LinearLayout.VERTICAL);
+        wrapper.setGravity(Gravity.CENTER_HORIZONTAL);
+        GridLayout.LayoutParams gridParams = new GridLayout.LayoutParams();
+        gridParams.setMargins(16, 16, 16, 16); 
+        gridParams.width = GridLayout.LayoutParams.WRAP_CONTENT;
+        gridParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
+    
+        int index = mood.ordinal();
+        // 7eme mood style
+        if (index == 6) { 
+            gridParams.columnSpec = GridLayout.spec(1, 1);
+            gridParams.rowSpec = GridLayout.spec(2);
+        }
+        wrapper.setLayoutParams(gridParams);
+    
+        // Container blanc avec largeur fixe
         LinearLayout container = new LinearLayout(context);
         container.setOrientation(LinearLayout.VERTICAL);
         container.setGravity(Gravity.CENTER);
         container.setPadding(8, 8, 8, 8);
         container.setClickable(true);
-
+    
         GradientDrawable background = new GradientDrawable();
         background.setCornerRadius(30);
         background.setColor(Color.WHITE);
         container.setBackground(background);
-
+    
+        LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(220, 220); // largeur/hauteur uniforme
+        container.setLayoutParams(containerParams);
+    
         ImageView icon = new ImageView(context);
         int initialIcon = (mood == currentMood) ? mood.getActiveIconRes() : mood.iconRes;
         icon.setImageResource(initialIcon);
+    
         LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(150, 150);
         icon.setLayoutParams(imgParams);
+    
         container.addView(icon);
-
         moodIcons.put(mood, icon);
-
+    
         TextView label = new TextView(context);
         label.setText(mood.label);
         label.setTextColor(Color.WHITE);
         label.setTextSize(14);
         label.setGravity(Gravity.CENTER);
         label.setPadding(0, 8, 0, 0);
-
-        LinearLayout wrapper = new LinearLayout(context);
-        wrapper.setOrientation(LinearLayout.VERTICAL);
-        wrapper.setGravity(Gravity.CENTER);
-        wrapper.setPadding(16, 16, 16, 16);
+    
         wrapper.addView(container);
         wrapper.addView(label);
-
-        container.setOnClickListener(v -> {
-            updateMoodSelection(mood);
-        });
-
+    
+        container.setOnClickListener(v -> updateMoodSelection(mood));
+    
         return wrapper;
     }
+    
 
     private void updateMoodSelection(MoodType selectedMood) {
         if (selectedMood == currentMood) return;

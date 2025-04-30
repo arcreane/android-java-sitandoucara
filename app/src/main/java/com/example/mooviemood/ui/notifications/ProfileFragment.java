@@ -20,13 +20,15 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment {
 
     private GridLayout gridLayout;
+    private TextView emptyText;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         gridLayout = root.findViewById(R.id.profile_grid);
-        renderFavorites();
+        emptyText = root.findViewById(R.id.empty_text);
 
+        renderFavorites();
         return root;
     }
 
@@ -34,23 +36,29 @@ public class ProfileFragment extends Fragment {
         gridLayout.removeAllViews();
         ArrayList<Movie> favorites = MoviesFragment.favorites;
 
-        for (Movie movie : favorites) {
-            View card = LayoutInflater.from(getContext()).inflate(R.layout.item_favorite, gridLayout, false);
+        if (favorites.isEmpty()) {
+            emptyText.setVisibility(View.VISIBLE);
+        } else {
+            emptyText.setVisibility(View.GONE);
+            for (Movie movie : favorites) {
+                View card = LayoutInflater.from(getContext()).inflate(R.layout.item_favorite, gridLayout, false);
 
-            ImageView img = card.findViewById(R.id.favorite_poster);
-            TextView title = card.findViewById(R.id.favorite_title);
-            ImageView heart = card.findViewById(R.id.favorite_heart);
+                ImageView img = card.findViewById(R.id.favorite_poster);
+                TextView title = card.findViewById(R.id.favorite_title);
+                ImageView heart = card.findViewById(R.id.favorite_heart);
 
-            Glide.with(this).load(movie.posterPath).into(img);
-            title.setText(movie.title);
-            heart.setImageResource(R.drawable.ic_favorite_filled);
+                Glide.with(this).load(movie.posterPath).into(img);
+                title.setText(movie.title);
+                heart.setImageResource(R.drawable.ic_favorite_filled);
 
-            heart.setOnClickListener(v -> {
-                MoviesFragment.favorites.remove(movie);
-                renderFavorites(); // refresh
-            });
+                heart.setOnClickListener(v -> {
+                    MoviesFragment.favorites.remove(movie);
+                    renderFavorites();
+                });
 
-            gridLayout.addView(card);
+                gridLayout.addView(card);
+            }
         }
     }
 }
+
