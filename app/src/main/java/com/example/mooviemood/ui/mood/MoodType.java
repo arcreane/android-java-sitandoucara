@@ -1,4 +1,4 @@
-package com.example.mooviemood.ui.home;
+package com.example.mooviemood.ui.mood;
 
 import com.example.mooviemood.R;
 
@@ -23,5 +23,26 @@ public enum MoodType {
 
     public int getActiveIconRes() {
         return activeIconRes;
+    }
+
+    public int[] getGenreIds() {
+        switch (this) {
+            case HAPPY:
+                return new int[]{35}; // Comedy
+            case SAD:
+                return new int[]{18}; // Drama
+            case NOSTALGIC:
+                return new int[]{10752, 36}; // War, History
+            case IN_LOVE:
+                return new int[]{10749}; // Romance
+            case BRAVE:
+                return new int[]{28, 12}; // Action, Adventure
+            case REFLECTION:
+                return new int[]{99}; // Documentary
+            case OPEN_MINDED:
+                return new int[]{878, 9648, 14}; // Sci-Fi, Mystery, Fantasy
+            default:
+                return new int[]{};
+        }
     }
 }

@@ -28,50 +28,48 @@ public class MovieRepository {
     }
 
     // Appel pour récupérer les films par genre
-    public static void fetchMoviesByGenre(int genreId, MovieCallback callback) {
+    public static void fetchMoviesByGenres(String genreIds, MovieCallback callback) {
         new AsyncTask<Void, Void, ArrayList<Movie>>() {
             Exception error;
-
+    
             @Override
             protected ArrayList<Movie> doInBackground(Void... voids) {
                 try {
-                    String urlStr = Constants.TMDB_BASE_URL + "/discover/movie?api_key=" + Constants.TMDB_API_KEY + "&with_genres=" + genreId;
+                    String urlStr = Constants.TMDB_BASE_URL + "/discover/movie?api_key=" + Constants.TMDB_API_KEY + "&with_genres=" + genreIds;
                     URL url = new URL(urlStr);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("GET");
-
+    
                     BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     StringBuilder sb = new StringBuilder();
                     String line;
-
+    
                     while ((line = reader.readLine()) != null) {
                         sb.append(line);
                     }
-
+    
                     JSONObject response = new JSONObject(sb.toString());
                     JSONArray results = response.getJSONArray("results");
-
+    
                     ArrayList<Movie> movies = new ArrayList<>();
-
+    
                     for (int i = 0; i < results.length(); i++) {
                         JSONObject m = results.getJSONObject(i);
-
-                        int id = m.getInt("id"); 
+                        int id = m.getInt("id");
                         String title = m.getString("title");
                         String overview = m.getString("overview");
                         String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
-
+    
                         movies.add(new Movie(id, title, overview, posterPath, new ArrayList<>()));
                     }
-
+    
                     return movies;
-
                 } catch (Exception e) {
                     error = e;
                     return null;
                 }
             }
-
+    
             @Override
             protected void onPostExecute(ArrayList<Movie> movies) {
                 if (movies != null) {
@@ -82,7 +80,7 @@ public class MovieRepository {
             }
         }.execute();
     }
-
+    
     // Appel pour récupérer les plateformes de diffusion d'un film
     public static void fetchWatchProviders(int movieId, StringCallback callback) {
         new AsyncTask<Void, Void, String>() {

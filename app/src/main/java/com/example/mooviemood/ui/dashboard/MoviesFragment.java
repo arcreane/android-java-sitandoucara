@@ -1,8 +1,9 @@
 package com.example.mooviemood.ui.dashboard;
 
 
-import com.example.mooviemood.ui.home.MoodFragment;
-import com.example.mooviemood.ui.home.MoodType;
+import com.example.mooviemood.ui.mood.MoodFragment;
+import com.example.mooviemood.ui.mood.MoodType;
+
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.text.TextUtils;
+
 
 import androidx.fragment.app.Fragment;
 
@@ -47,7 +50,11 @@ updateCurrentMoodText();
         ImageView btnPrev = root.findViewById(R.id.btn_prev);
         btnLike = root.findViewById(R.id.btn_like);
 
-        MovieRepository.fetchMoviesByGenre(35, new MovieRepository.MovieCallback() {
+        MoodType currentMood = MoodFragment.getCurrentMood();
+        int[] genreIds = currentMood.getGenreIds();
+        String genreParam = TextUtils.join(",", convertToList(genreIds));
+        
+        MovieRepository.fetchMoviesByGenres(genreParam, new MovieRepository.MovieCallback() {
             @Override
             public void onSuccess(ArrayList<Movie> result) {
                 movies = result;
@@ -117,4 +124,13 @@ updateCurrentMoodText();
             currentMoodText.setText("Your Mood: " + currentMood.label);
         }
     }
+
+    private ArrayList<String> convertToList(int[] genreIds) {
+        ArrayList<String> list = new ArrayList<>();
+        for (int id : genreIds) {
+            list.add(String.valueOf(id));
+        }
+        return list;
+    }
+    
 }
