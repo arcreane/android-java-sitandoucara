@@ -25,6 +25,7 @@ public enum MoodType {
         return activeIconRes;
     }
 
+    //id des films...
     public int[] getGenreIds() {
         switch (this) {
             case HAPPY:

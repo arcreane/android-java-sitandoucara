@@ -110,7 +110,7 @@ public class MovieRepository {
                         }
                         return TextUtils.join(" - ", names);
                     } else {
-                        return "Non disponible en streaming";
+                        return "Not available on streaming platforms";
                     }
 
                 } catch (Exception e) {
