@@ -14,21 +14,21 @@ public class TiltDetector implements SensorEventListener {
     }
 
     private final SensorManager sensorManager;
-    private final Sensor accelerometer;
+    private final Sensor gyroscope;
     private final TiltCallback callback;
 
     private long lastUpdate = 0;
-    private static final int TILT_THRESHOLD = 5; // ajustable
+    private static final float TILT_THRESHOLD = 1.0f; 
 
     public TiltDetector(Context context, TiltCallback callback) {
         this.callback = callback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager != null ? sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) : null;
+        gyroscope = sensorManager != null ? sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) : null;
     }
 
     public void start() {
-        if (sensorManager != null && accelerometer != null) {
-            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        if (sensorManager != null && gyroscope != null) {
+            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
@@ -40,14 +40,15 @@ public class TiltDetector implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float x = event.values[0];
+        float yRotation = event.values[1]; 
         long currentTime = System.currentTimeMillis();
 
         if ((currentTime - lastUpdate) > 800) {
             lastUpdate = currentTime;
-            if (x > TILT_THRESHOLD) {
+
+            if (yRotation > TILT_THRESHOLD) {
                 callback.onTiltLeft();
-            } else if (x < -TILT_THRESHOLD) {
+            } else if (yRotation < -TILT_THRESHOLD) {
                 callback.onTiltRight();
             }
         }
