@@ -104,17 +104,28 @@ public class MoviesFragment extends Fragment {
             }
         });
 
-        btnLike.setOnClickListener(v -> {
-            Movie currentMovie = movies.get(currentIndex);
+       btnLike.setOnClickListener(v -> {
+    Movie currentMovie = movies.get(currentIndex);
 
-            if (favorites.contains(currentMovie)) {
-                favorites.remove(currentMovie);
-                btnLike.setImageResource(R.drawable.ic_favorite); 
-            } else {
-                favorites.add(currentMovie);
-                btnLike.setImageResource(R.drawable.ic_favorite_filled); 
-            }
-        });
+    if (favorites.contains(currentMovie)) {
+        favorites.remove(currentMovie);
+        btnLike.setImageResource(R.drawable.ic_favorite);
+    } else {
+       MoodType selectedMood = MoodFragment.getCurrentMood();
+Movie withMood = new Movie(
+    currentMovie.id,
+    currentMovie.title,
+    currentMovie.overview,
+    currentMovie.posterPath,
+    currentMovie.providers,
+    selectedMood.label
+);
+
+        favorites.add(withMood);
+        btnLike.setImageResource(R.drawable.ic_favorite_filled);
+    }
+});
+
 
         return root;
     }

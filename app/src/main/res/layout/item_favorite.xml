@@ -19,11 +19,17 @@
         android:id="@+id/favorite_poster"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        
         android:background="@drawable/rounded_poster"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
         android:contentDescription="Movie poster" />
+
+         <LinearLayout
+      
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
         <TextView
             android:id="@+id/favorite_title"
@@ -34,6 +40,20 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />   
+
+        
+<TextView
+    android:id="@+id/favorite_mood"
+    android:layout_width="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_height="wrap_content"
+    android:text="Mood: Happy"
+    android:textColor="#9F0C2D"
+    android:textSize="14sp"
+    android:layout_marginTop="4dp" />
+
+     </LinearLayout>  
+
     </LinearLayout>        
 
     <ImageView

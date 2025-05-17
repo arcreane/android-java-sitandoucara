@@ -10,7 +10,6 @@
     android:padding="24dp"
     tools:context=".ui.mood.MoodFragment">
 
-    <!-- Ligne Hey / What’s your mood today? -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +19,7 @@
         <TextView
             android:text="Hey,"
             android:textStyle="italic"
-            android:textColor="#FF3366"
+            android:textColor="#9F0C2D"
             android:textSize="20sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,14 +27,15 @@
 
         <TextView
             android:text="What’s your mood today?"
-            android:textStyle="italic"
+           
+             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!-- Zone centrée avec grille et shadow -->
+  
      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

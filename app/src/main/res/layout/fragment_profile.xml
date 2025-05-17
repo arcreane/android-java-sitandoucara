@@ -29,11 +29,9 @@
     android:layout_height="wrap_content"
     android:text="No movies in favorites."
     android:textStyle="italic"
-    android:textColor="#FF3366"
+    android:textColor="#9F0C2D"
     android:layout_marginTop="8dp"
     android:visibility="gone"/>
-
-
 
         <GridLayout
             android:id="@+id/profile_grid"

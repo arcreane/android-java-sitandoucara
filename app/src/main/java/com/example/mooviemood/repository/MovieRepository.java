@@ -53,15 +53,20 @@ public class MovieRepository {
     
                     ArrayList<Movie> movies = new ArrayList<>();
     
-                    for (int i = 0; i < results.length(); i++) {
-                        JSONObject m = results.getJSONObject(i);
-                        int id = m.getInt("id");
-                        String title = m.getString("title");
-                        String overview = m.getString("overview");
-                        String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
+                   for (int i = 0; i < results.length(); i++) {
+    JSONObject m = results.getJSONObject(i);
+    int id = m.getInt("id");
+    String title = m.getString("title");
+    String overview = m.getString("overview");
+    String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
+
     
-                        movies.add(new Movie(id, title, overview, posterPath, new ArrayList<>()));
-                    }
+    String moodLabel = com.example.mooviemood.ui.mood.MoodFragment.getCurrentMood().label;
+
+   
+    movies.add(new Movie(id, title, overview, posterPath, new ArrayList<>(), moodLabel));
+}
+
     
                     return movies;
                 } catch (Exception e) {

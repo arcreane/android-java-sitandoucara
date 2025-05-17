@@ -7,14 +7,16 @@ public class Movie {
     public String overview;
     public String posterPath;
     public List<String> providers;
+    public String moodLabel;
 
     public int id;
-    public Movie(int id, String title, String overview, String posterPath, List<String> providers) {
+    public Movie(int id, String title, String overview, String posterPath, List<String> providers, String moodLabel) {
         this.id = id;
         this.title = title;
         this.overview = overview;
         this.posterPath = posterPath;
         this.providers = providers;
+        this.moodLabel = moodLabel;
     }
 
     @Override

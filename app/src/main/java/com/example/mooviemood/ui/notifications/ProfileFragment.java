@@ -45,10 +45,12 @@ public class ProfileFragment extends Fragment {
 
                 ImageView img = card.findViewById(R.id.favorite_poster);
                 TextView title = card.findViewById(R.id.favorite_title);
+                TextView mood = card.findViewById(R.id.favorite_mood);
                 ImageView heart = card.findViewById(R.id.favorite_heart);
 
                 Glide.with(this).load(movie.posterPath).into(img);
                 title.setText(movie.title);
+                mood.setText("Mood: " + movie.moodLabel);
                 heart.setImageResource(R.drawable.ic_favorite_filled);
 
                 heart.setOnClickListener(v -> {
