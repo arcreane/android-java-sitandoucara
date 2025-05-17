@@ -9,26 +9,31 @@ import android.hardware.SensorManager;
 public class TiltDetector implements SensorEventListener {
 
     public interface TiltCallback {
-        void onTiltLeft();
-        void onTiltRight();
+        void onTiltLeft();   
+        void onTiltRight();  
     }
 
     private final SensorManager sensorManager;
-    private final Sensor gyroscope;
+    private final Sensor rotationSensor;
     private final TiltCallback callback;
 
-    private long lastUpdate = 0;
-    private static final float TILT_THRESHOLD = 1.0f; 
+    private static final float ANGLE_THRESHOLD = 18.0f;
+
+    private enum TiltState {
+        NEUTRAL, TILTED_LEFT, TILTED_RIGHT
+    }
+
+    private TiltState currentState = TiltState.NEUTRAL;
 
     public TiltDetector(Context context, TiltCallback callback) {
         this.callback = callback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        gyroscope = sensorManager != null ? sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) : null;
+        rotationSensor = sensorManager != null ? sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) : null;
     }
 
     public void start() {
-        if (sensorManager != null && gyroscope != null) {
-            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_NORMAL);
+        if (sensorManager != null && rotationSensor != null) {
+            sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_UI);
         }
     }
 
@@ -40,17 +45,31 @@ public class TiltDetector implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        float yRotation = event.values[1]; 
-        long currentTime = System.currentTimeMillis();
+        float[] rotationMatrix = new float[9];
+        SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values);
 
-        if ((currentTime - lastUpdate) > 800) {
-            lastUpdate = currentTime;
+        float[] orientationAngles = new float[3];
+        SensorManager.getOrientation(rotationMatrix, orientationAngles);
 
-            if (yRotation > TILT_THRESHOLD) {
-                callback.onTiltLeft();
-            } else if (yRotation < -TILT_THRESHOLD) {
-                callback.onTiltRight();
-            }
+        float yDegrees = (float) Math.toDegrees(orientationAngles[2]);
+
+        switch (currentState) {
+            case NEUTRAL:
+                if (yDegrees >= ANGLE_THRESHOLD) {
+                    currentState = TiltState.TILTED_RIGHT;
+                    callback.onTiltRight();
+                } else if (yDegrees <= -ANGLE_THRESHOLD) {
+                    currentState = TiltState.TILTED_LEFT;
+                    callback.onTiltLeft();
+                }
+                break;
+
+            case TILTED_LEFT:
+            case TILTED_RIGHT:
+                if (yDegrees > -ANGLE_THRESHOLD && yDegrees < ANGLE_THRESHOLD) {
+                    currentState = TiltState.NEUTRAL;
+                }
+                break;
         }
     }
 
