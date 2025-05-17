@@ -39,7 +39,7 @@
             android:id="@+id/profile_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
+            android:columnCount="1"
             android:useDefaultMargins="true"
             android:alignmentMode="alignMargins"
             android:orientation="horizontal" />

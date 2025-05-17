@@ -32,41 +32,77 @@
 
 
         <TextView
-            android:id="@+id/available_on"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Available on:"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="16sp" />
+    android:id="@+id/available_on"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Available on:"
+    android:textColor="@android:color/white"
+    android:textStyle="bold"
+    android:textSize="16sp"
+    android:gravity="end"
+    android:layout_marginBottom="4dp"/>
 
-        <TextView
-            android:id="@+id/providers_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Netflix"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="16dp" />
+
+       <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_box"
+
+    android:padding="6dp"
+    android:layout_marginBottom="16dp"
+    android:layout_gravity="end"
+    android:orientation="horizontal"
+    android:layout_marginTop="2dp"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
+    android:clipToPadding="false"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:elevation="3dp"
+    android:layout_marginHorizontal="0dp">
+
+    <TextView
+        android:id="@+id/providers_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Netflix"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:gravity="center"/>
+</LinearLayout>
+
+
 
         <LinearLayout
             android:id="@+id/card_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+              android:background="@drawable/rounded_box"
+              android:padding="12dp"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/poster"
-                android:layout_width="250dp"
-                android:layout_height="350dp"
-                android:scaleType="fitCenter" />
+          <ImageView
+    android:id="@+id/poster"
+    android:layout_width="250dp"
+    android:layout_height="350dp"
+    android:scaleType="centerCrop"
+    android:adjustViewBounds="false"
+    android:background="@drawable/rounded_poster"
+    android:contentDescription="Movie poster"
+    android:clipToOutline="true" />
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="#25233D"
-                android:padding="16dp"
+              
+                
                 android:layout_marginTop="8dp">
 
                 <TextView
@@ -99,8 +135,8 @@
 
             <ImageView
                 android:id="@+id/btn_prev"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_arrow_back"
                 android:scaleType="centerInside"
@@ -108,8 +144,8 @@
 
             <ImageView
                 android:id="@+id/btn_like"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_favorite"
                 android:scaleType="centerInside"
@@ -118,8 +154,8 @@
 
             <ImageView
                 android:id="@+id/btn_next"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_arrow_forward"
                 android:scaleType="centerInside"
