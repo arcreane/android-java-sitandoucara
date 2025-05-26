@@ -13,13 +13,13 @@
 
     <fragment
     android:id="@+id/navigation_dashboard"
-    android:name="com.example.mooviemood.ui.dashboard.MoviesFragment"
+    android:name="com.example.mooviemood.ui.movie.MoviesFragment"
     android:label="Movies"
     tools:layout="@layout/fragment_movies" />
 
     <fragment
     android:id="@+id/navigation_profile"
-    android:name="com.example.mooviemood.ui.notifications.ProfileFragment"
+    android:name="com.example.mooviemood.ui.profile.ProfileFragment"
     android:label="Profile"
     tools:layout="@layout/fragment_profile" />
 

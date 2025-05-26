@@ -1,8 +1,8 @@
-package com.example.mooviemood.ui.dashboard;
+package com.example.mooviemood.ui.movie;
 
 
 import com.example.mooviemood.ui.mood.MoodFragment;
-import com.example.mooviemood.ui.mood.MoodType;
+import com.example.mooviemood.ui.mood.MoodModel;
 
 import com.example.mooviemood.utils.TiltDetector;
 
@@ -19,10 +19,11 @@ import android.text.TextUtils;
 
 import androidx.fragment.app.Fragment;
 
+
 import com.bumptech.glide.Glide;
 import com.example.mooviemood.R;
-import com.example.mooviemood.model.Movie;
-import com.example.mooviemood.repository.MovieRepository;
+import com.example.mooviemood.ui.movie.MovieModel;
+import com.example.mooviemood.ui.movie.MovieRepository;
 
 import java.util.ArrayList;
 
@@ -34,8 +35,10 @@ public class MoviesFragment extends Fragment {
     private TextView currentMoodText;
 
 
-    private ArrayList<Movie> movies = new ArrayList<>();
-    public static ArrayList<Movie> favorites = new ArrayList<>();
+   private ArrayList<MovieModel> movies = new ArrayList<>();
+   public static ArrayList<MovieModel> favorites = new ArrayList<>();
+
+
     private int currentIndex = 0;
 
     private TiltDetector tiltDetector;
@@ -71,13 +74,13 @@ public class MoviesFragment extends Fragment {
         });
 
          // init data
-        MoodType currentMood = MoodFragment.getCurrentMood();
+        MoodModel currentMood = MoodFragment.getCurrentMood();
         int[] genreIds = currentMood.getGenreIds();
         String genreParam = TextUtils.join(",", convertToList(genreIds));
         
         MovieRepository.fetchMoviesByGenres(genreParam, new MovieRepository.MovieCallback() {
             @Override
-            public void onSuccess(ArrayList<Movie> result) {
+            public void onSuccess(ArrayList<MovieModel> result) {
                 movies = result;
                 showMovie(currentIndex);
             }
@@ -105,14 +108,15 @@ public class MoviesFragment extends Fragment {
         });
 
        btnLike.setOnClickListener(v -> {
-    Movie currentMovie = movies.get(currentIndex);
+    MovieModel currentMovie = movies.get(currentIndex);
+
 
     if (favorites.contains(currentMovie)) {
         favorites.remove(currentMovie);
         btnLike.setImageResource(R.drawable.ic_favorite);
     } else {
-       MoodType selectedMood = MoodFragment.getCurrentMood();
-Movie withMood = new Movie(
+    MoodModel selectedMood = MoodFragment.getCurrentMood();
+MovieModel withMood = new MovieModel(
     currentMovie.id,
     currentMovie.title,
     currentMovie.overview,
@@ -144,7 +148,8 @@ Movie withMood = new Movie(
 
     private void showMovie(int index) {
         if (movies.isEmpty() || index < 0 || index >= movies.size()) return;
-        Movie movie = movies.get(index);
+       MovieModel movie = movies.get(index);
+
 
         Glide.with(this)
             .load(movie.posterPath)
@@ -166,7 +171,7 @@ Movie withMood = new Movie(
     }
 
     private void updateCurrentMoodText() {
-        MoodType currentMood = MoodFragment.getCurrentMood();
+        MoodModel currentMood = MoodFragment.getCurrentMood();
         if (currentMoodText != null && currentMood != null) {
             currentMoodText.setText("Your Mood: " + currentMood.label);
         }

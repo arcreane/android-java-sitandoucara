@@ -2,7 +2,7 @@ package com.example.mooviemood.ui.mood;
 
 import com.example.mooviemood.R;
 
-public enum MoodType {
+public enum MoodModel {
     HAPPY("Happy", R.drawable.ic_happy, R.drawable.ic_happy_active),
     SAD("Sad", R.drawable.ic_sad, R.drawable.ic_sad_active),
     NOSTALGIC("Nostalgic", R.drawable.ic_nostalgic, R.drawable.ic_nostalgic_active),
@@ -15,7 +15,7 @@ public enum MoodType {
     public final int iconRes;
     public final int activeIconRes;
 
-    MoodType(String label, int iconRes, int activeIconRes) {
+    MoodModel (String label, int iconRes, int activeIconRes) {
         this.label = label;
         this.iconRes = iconRes;
         this.activeIconRes = activeIconRes;

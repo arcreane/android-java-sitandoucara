@@ -1,8 +1,8 @@
-package com.example.mooviemood.model;
+package com.example.mooviemood.ui.movie;
 
 import java.util.List;
 
-public class Movie {
+public class MovieModel  {
     public String title;
     public String overview;
     public String posterPath;
@@ -10,7 +10,7 @@ public class Movie {
     public String moodLabel;
 
     public int id;
-    public Movie(int id, String title, String overview, String posterPath, List<String> providers, String moodLabel) {
+    public MovieModel(int id, String title, String overview, String posterPath, List<String> providers, String moodLabel) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -23,7 +23,8 @@ public class Movie {
 public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null || getClass() != obj.getClass()) return false;
-    Movie movie = (Movie) obj;
+   MovieModel movie = (MovieModel) obj;
+
     return id == movie.id;
 }
 

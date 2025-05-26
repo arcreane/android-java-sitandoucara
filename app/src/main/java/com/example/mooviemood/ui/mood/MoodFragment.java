@@ -22,21 +22,21 @@ import java.util.HashMap;
 public class MoodFragment extends Fragment {
 
     private GridLayout moodGrid;
-    private MoodType currentMood = MoodType.OPEN_MINDED;
-    private final HashMap<MoodType, ImageView> moodIcons = new HashMap<>();
+    private MoodModel currentMood = MoodModel.OPEN_MINDED;
+    private final HashMap<MoodModel, ImageView> moodIcons = new HashMap<>();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_mood, container, false);
         moodGrid = root.findViewById(R.id.mood_grid);
 
-        for (MoodType mood : MoodType.values()) {
+        for (MoodModel mood : MoodModel.values()) {
             moodGrid.addView(createMoodView(mood));
         }
 
         return root;
     }
 
-    private View createMoodView(MoodType mood) {
+    private View createMoodView(MoodModel mood) {
         Context context = requireContext();
     
         // Wrapper vertical
@@ -97,7 +97,7 @@ public class MoodFragment extends Fragment {
     }
     
 
-    private void updateMoodSelection(MoodType selectedMood) {
+    private void updateMoodSelection(MoodModel selectedMood) {
         if (selectedMood == currentMood) return;
 
         // Réinitialiser l'ancien en mode normal
@@ -111,8 +111,8 @@ public class MoodFragment extends Fragment {
         currentMood = selectedMood;
     }
 
-    public static MoodType getCurrentMood() {
-        return instance != null ? instance.currentMood : MoodType.OPEN_MINDED;
+    public static MoodModel getCurrentMood() {
+        return instance != null ? instance.currentMood : MoodModel.OPEN_MINDED;
     }
     
     private static MoodFragment instance;

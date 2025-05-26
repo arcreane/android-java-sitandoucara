@@ -1,9 +1,9 @@
-package com.example.mooviemood.repository;
+package com.example.mooviemood.ui.movie;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.example.mooviemood.model.Movie;
+import com.example.mooviemood.ui.movie.MovieModel;
 import com.example.mooviemood.utils.Constants;
 
 import org.json.JSONArray;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class MovieRepository {
 
     public interface MovieCallback {
-        void onSuccess(ArrayList<Movie> movies);
+        void onSuccess(ArrayList<MovieModel> movies);
         void onError(Exception e);
     }
 
@@ -29,11 +29,11 @@ public class MovieRepository {
 
     // Appel pour récupérer les films par genre
     public static void fetchMoviesByGenres(String genreIds, MovieCallback callback) {
-        new AsyncTask<Void, Void, ArrayList<Movie>>() {
+        new AsyncTask<Void, Void, ArrayList<MovieModel>>() {
             Exception error;
     
             @Override
-            protected ArrayList<Movie> doInBackground(Void... voids) {
+            protected ArrayList<MovieModel> doInBackground(Void... voids) {
                 try {
                     String urlStr = Constants.TMDB_BASE_URL + "/discover/movie?api_key=" + Constants.TMDB_API_KEY + "&with_genres=" + genreIds;
                     URL url = new URL(urlStr);
@@ -51,7 +51,7 @@ public class MovieRepository {
                     JSONObject response = new JSONObject(sb.toString());
                     JSONArray results = response.getJSONArray("results");
     
-                    ArrayList<Movie> movies = new ArrayList<>();
+                    ArrayList<MovieModel> movies = new ArrayList<>();
     
                    for (int i = 0; i < results.length(); i++) {
     JSONObject m = results.getJSONObject(i);
@@ -64,7 +64,7 @@ public class MovieRepository {
     String moodLabel = com.example.mooviemood.ui.mood.MoodFragment.getCurrentMood().label;
 
    
-    movies.add(new Movie(id, title, overview, posterPath, new ArrayList<>(), moodLabel));
+    movies.add(new MovieModel(id, title, overview, posterPath, new ArrayList<>(), moodLabel));
 }
 
     
@@ -76,7 +76,7 @@ public class MovieRepository {
             }
     
             @Override
-            protected void onPostExecute(ArrayList<Movie> movies) {
+            protected void onPostExecute(ArrayList<MovieModel> movies) {
                 if (movies != null) {
                     callback.onSuccess(movies);
                 } else {
