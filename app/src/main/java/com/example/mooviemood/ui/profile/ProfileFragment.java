@@ -24,6 +24,7 @@ public class ProfileFragment extends Fragment {
     private GridLayout gridLayout;
     private TextView emptyText;
 
+    // Méthode pour la création de la vue (init les composants et affiche les favoris)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -33,7 +34,7 @@ public class ProfileFragment extends Fragment {
         renderFavorites();
         return root;
     }
-
+   // Afficher les films favoris dans une grid ou le message
     private void renderFavorites() {
         gridLayout.removeAllViews();
         ArrayList<MovieModel> favorites = MoviesFragment.favorites;
@@ -56,6 +57,7 @@ public class ProfileFragment extends Fragment {
                 mood.setText("Mood: " + movie.moodLabel);
                 heart.setImageResource(R.drawable.ic_favorite_filled);
 
+                // Supprime le film des favoris et direct rafraîchir la vue 
                 heart.setOnClickListener(v -> {
                     MoviesFragment.favorites.remove(movie);
                     renderFavorites();

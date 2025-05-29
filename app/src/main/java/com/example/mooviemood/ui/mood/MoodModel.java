@@ -2,6 +2,7 @@ package com.example.mooviemood.ui.mood;
 
 import com.example.mooviemood.R;
 
+// Enum avec les différents moods avec leur label etc... 
 public enum MoodModel {
     HAPPY("Happy", R.drawable.ic_happy, R.drawable.ic_happy_active),
     SAD("Sad", R.drawable.ic_sad, R.drawable.ic_sad_active),
@@ -25,7 +26,7 @@ public enum MoodModel {
         return activeIconRes;
     }
 
-    //id des films...
+    // Associe chaque mood à un ou plusieurs genres
     public int[] getGenreIds() {
         switch (this) {
             case HAPPY:

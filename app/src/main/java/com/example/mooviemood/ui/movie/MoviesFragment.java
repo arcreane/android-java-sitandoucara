@@ -77,7 +77,8 @@ public class MoviesFragment extends Fragment {
         MoodModel currentMood = MoodFragment.getCurrentMood();
         int[] genreIds = currentMood.getGenreIds();
         String genreParam = TextUtils.join(",", convertToList(genreIds));
-        
+
+        // Récupère les films depuis l'API en fonction du mood sélectionné
         MovieRepository.fetchMoviesByGenres(genreParam, new MovieRepository.MovieCallback() {
             @Override
             public void onSuccess(ArrayList<MovieModel> result) {
@@ -91,45 +92,37 @@ public class MoviesFragment extends Fragment {
             }
         });
 
-         // navigation buttons
+        
+// Bouton Suivant 
+btnNext.setOnClickListener(v -> {
+    if (currentIndex < movies.size() - 1) {
+        currentIndex++;
+        showMovie(currentIndex);
+    }
+});
 
-        btnNext.setOnClickListener(v -> {
-            if (currentIndex < movies.size() - 1) {
-                currentIndex++;
-                showMovie(currentIndex);
-            }
-        });
+// Bouton Précédent 
+btnPrev.setOnClickListener(v -> {
+    if (currentIndex > 0) {
+        currentIndex--;
+        showMovie(currentIndex);
+    }
+});
 
-        btnPrev.setOnClickListener(v -> {
-            if (currentIndex > 0) {
-                currentIndex--;
-                showMovie(currentIndex);
-            }
-        });
-
-       btnLike.setOnClickListener(v -> {
+// Bouton Like  (ajoute ou retire le film des favoris)
+btnLike.setOnClickListener(v -> {
     MovieModel currentMovie = movies.get(currentIndex);
-
 
     if (favorites.contains(currentMovie)) {
         favorites.remove(currentMovie);
         btnLike.setImageResource(R.drawable.ic_favorite);
     } else {
-    MoodModel selectedMood = MoodFragment.getCurrentMood();
-MovieModel withMood = new MovieModel(
-    currentMovie.id,
-    currentMovie.title,
-    currentMovie.overview,
-    currentMovie.posterPath,
-    currentMovie.providers,
-    selectedMood.label
-);
-
-        favorites.add(withMood);
+        // Associe dynamiquement le mood sélectionné avant d'ajouter
+        currentMovie.moodLabel = MoodFragment.getCurrentMood().label;
+        favorites.add(currentMovie);
         btnLike.setImageResource(R.drawable.ic_favorite_filled);
     }
 });
-
 
         return root;
     }
@@ -146,6 +139,7 @@ MovieModel withMood = new MovieModel(
         if (tiltDetector != null) tiltDetector.stop();
     }
 
+    // Met à jour les vues avec les infos du film actuel
     private void showMovie(int index) {
         if (movies.isEmpty() || index < 0 || index >= movies.size()) return;
        MovieModel movie = movies.get(index);
@@ -170,6 +164,7 @@ MovieModel withMood = new MovieModel(
         );
     }
 
+    // Actualise dynamiquement le texte du mood sélectionné
     private void updateCurrentMoodText() {
         MoodModel currentMood = MoodFragment.getCurrentMood();
         if (currentMoodText != null && currentMood != null) {
@@ -190,7 +185,8 @@ MovieModel withMood = new MovieModel(
             showMovie(currentIndex);
         }
     }
-
+    
+    // Convertit un tableau d'IDs (int[]) en liste de String pour l'URL de l'API
     private ArrayList<String> convertToList(int[] genreIds) {
         ArrayList<String> list = new ArrayList<>();
         for (int id : genreIds) {

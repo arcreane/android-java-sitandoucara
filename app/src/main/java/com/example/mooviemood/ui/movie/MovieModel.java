@@ -20,18 +20,17 @@ public class MovieModel  {
     }
 
     @Override
-public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
-   MovieModel movie = (MovieModel) obj;
-
-    return id == movie.id;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        MovieModel movie = (MovieModel) obj;
+        return id == movie.id;
 }
 
-@Override
-public int hashCode() {
-    return id;
-}
+    @Override
+    public int hashCode() {
+        return id;
+    }
 
     
 }

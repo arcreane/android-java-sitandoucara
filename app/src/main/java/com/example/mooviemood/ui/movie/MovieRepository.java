@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class MovieRepository {
 
+    // Interface pour retourner la liste de films récupérée ou une erreur
     public interface MovieCallback {
         void onSuccess(ArrayList<MovieModel> movies);
         void onError(Exception e);
@@ -27,7 +28,7 @@ public class MovieRepository {
         void onResult(String result);
     }
 
-    // Appel pour récupérer les films par genre
+    //Requête HTTP vers l'API TMDB pour récupérer les films selon les genres donnés
     public static void fetchMoviesByGenres(String genreIds, MovieCallback callback) {
         new AsyncTask<Void, Void, ArrayList<MovieModel>>() {
             Exception error;
@@ -52,28 +53,30 @@ public class MovieRepository {
                     JSONArray results = response.getJSONArray("results");
     
                     ArrayList<MovieModel> movies = new ArrayList<>();
+
+                    // Construction de l'objet MovieModel à partir des données JSON récupérées
     
                    for (int i = 0; i < results.length(); i++) {
-    JSONObject m = results.getJSONObject(i);
-    int id = m.getInt("id");
-    String title = m.getString("title");
-    String overview = m.getString("overview");
-    String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
+                        JSONObject m = results.getJSONObject(i);
+                        int id = m.getInt("id");
+                        String title = m.getString("title");
+                        String overview = m.getString("overview");
+                        String posterPath = Constants.TMDB_IMAGE_URL + m.getString("poster_path");
+
+                        
+                        String moodLabel = com.example.mooviemood.ui.mood.MoodFragment.getCurrentMood().label;
+
+                    
+                        movies.add(new MovieModel(id, title, overview, posterPath, new ArrayList<>(), moodLabel));
+                    }
 
     
-    String moodLabel = com.example.mooviemood.ui.mood.MoodFragment.getCurrentMood().label;
-
-   
-    movies.add(new MovieModel(id, title, overview, posterPath, new ArrayList<>(), moodLabel));
-}
-
-    
-                    return movies;
-                } catch (Exception e) {
-                    error = e;
-                    return null;
+                        return movies;
+                    }   catch (Exception e) {
+                        error = e;
+                        return null;
+                    }
                 }
-            }
     
             @Override
             protected void onPostExecute(ArrayList<MovieModel> movies) {
@@ -86,7 +89,7 @@ public class MovieRepository {
         }.execute();
     }
     
-    // Appel pour récupérer les plateformes de diffusion d'un film
+    // Requête HTTP vers l'API TMDB pour récupérer les plateformes de streaming d'un film
     public static void fetchWatchProviders(int movieId, StringCallback callback) {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -105,6 +108,8 @@ public class MovieRepository {
                     }
 
                     JSONObject data = new JSONObject(sb.toString());
+
+                    // Extrait les noms des plateformes disponibles pour la FR depuis la réponse JSON
                     JSONObject fr = data.optJSONObject("results").optJSONObject("FR");
 
                     if (fr != null && fr.has("flatrate")) {

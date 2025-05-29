@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// Écran d’accueil temporaire 
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -34,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 
         splashText.setText(spannable);
 
+        // Redirige vers MainActivity après le délai
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);

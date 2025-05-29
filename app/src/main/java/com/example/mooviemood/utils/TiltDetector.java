@@ -6,8 +6,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+// Classe utilitaire qui détecte l'inclinaison gauche/droite
 public class TiltDetector implements SensorEventListener {
 
+    // Interface de rappel utilisée pour déclencher une action quand le user incline l'appareil
     public interface TiltCallback {
         void onTiltLeft();   
         void onTiltRight();  
@@ -17,6 +19,7 @@ public class TiltDetector implements SensorEventListener {
     private final Sensor rotationSensor;
     private final TiltCallback callback;
 
+    // Seuil d'angle (en degrés) à partir duquel une inclinaison est considérée significative
     private static final float ANGLE_THRESHOLD = 18.0f;
 
     private enum TiltState {
@@ -43,6 +46,7 @@ public class TiltDetector implements SensorEventListener {
         }
     }
 
+    // Méthode appelée à chaque changement de capteur
     @Override
     public void onSensorChanged(SensorEvent event) {
         float[] rotationMatrix = new float[9];
@@ -66,6 +70,7 @@ public class TiltDetector implements SensorEventListener {
 
             case TILTED_LEFT:
             case TILTED_RIGHT:
+            // Repasser à l’état neutre si le user revient à une position centrale
                 if (yDegrees > -ANGLE_THRESHOLD && yDegrees < ANGLE_THRESHOLD) {
                     currentState = TiltState.NEUTRAL;
                 }
